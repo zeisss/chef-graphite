@@ -15,6 +15,11 @@
     SetEnv DJANGO_SETTINGS_MODULE graphite.settings
     PythonDebug Off
     PythonAutoReload Off
+    AuthUserFile /opt/graphite/storage/httpusers
+    AuthName "This is a protected area" 
+    AuthGroupFile /dev/null 
+    AuthType Basic 
+    Require valid-user
   </Location>
 
   <Location "/content/">

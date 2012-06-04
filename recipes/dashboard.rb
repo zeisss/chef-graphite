@@ -37,6 +37,12 @@ apache_site "000-default" do
   enable false
 end
 
+cookbook_file "/opt/graphite/storage/httpusers" do
+  owner node["apache"]["user"]
+  group node["apache"]["group"]
+  action :create_if_missing
+end
+
 web_app "graphite" do
   template "graphite.conf.erb"
   docroot "/opt/graphite/webapp"
