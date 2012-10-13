@@ -37,10 +37,15 @@ apache_site "000-default" do
   enable false
 end
 
-cookbook_file "/opt/graphite/storage/httpusers" do
+sysadmins = search(:users, 'groups:sysadmin')
+template "/opt/graphite/storage/httpusers" do
+  source "htpasswd.users.erb"
   owner node["apache"]["user"]
   group node["apache"]["group"]
-  action :create_if_missing
+  mode 0644
+  variables(
+    :sysadmins => sysadmins
+  )
 end
 
 web_app "graphite" do
