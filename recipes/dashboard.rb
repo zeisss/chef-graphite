@@ -31,8 +31,6 @@ template "/opt/graphite/webapp/graphite/local_settings.py" do
   notifies :restart, "service[apache2]"
 end
 
-
-
 apache_site "000-default" do
   enable false
 end
@@ -40,7 +38,7 @@ end
 web_app "graphite" do
   template "graphite.conf.erb"
   docroot "/opt/graphite/webapp"
-  server_name "graphite"
+  server_name node["graphite"]["dashboard"]["server_name"]
 end
 
 [ "log", "whisper" ].each do |dir|
@@ -59,6 +57,16 @@ cookbook_file "/opt/graphite/storage/graphite.db" do
   owner node["apache"]["user"]
   group node["apache"]["group"]
   action :create_if_missing
+end
+
+execute "Correct graphite.db permissions" do
+  command "chown #{node["apache"]["user"]}:#{node["apache"]["group"]} /opt/graphite/storage/graphite.db"
+  action :run
+end
+
+execute "Create missing database tables" do
+  command "python /opt/graphite/webapp/graphite/manage.py syncdb"
+  action :run
 end
 
 logrotate_app "dashboard" do
