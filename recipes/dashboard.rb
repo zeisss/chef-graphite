@@ -25,7 +25,7 @@ template "/opt/graphite/webapp/graphite/local_settings.py" do
   owner node["apache"]["user"]
   group node["apache"]["group"]
   variables(
-    :storage_dir    => node["graphite"]["storage_dir"]
+    :storage_dir    => node["graphite"]["storage_dir"],
     :timezone       => node["graphite"]["dashboard"]["timezone"],
     :memcache_hosts => node["graphite"]["dashboard"]["memcache_hosts"]
   )
