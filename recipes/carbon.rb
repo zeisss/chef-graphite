@@ -3,6 +3,15 @@ python_pip "carbon" do
   action :install
 end
 
+directory "local data dir" do
+  path node["graphite"]["carbon"]["local_data_dir"]
+  action :create
+  mode "0755"
+  recursive true
+  owner node["apache"]["user"]
+  group node["apache"]["group"]
+end
+
 template "/opt/graphite/conf/carbon.conf" do
   mode "0644"
   source "carbon.conf.erb"
@@ -11,6 +20,7 @@ template "/opt/graphite/conf/carbon.conf" do
   variables(
     :line_receiver_interface    => node["graphite"]["carbon"]["line_receiver_interface"],
     :pickle_receiver_interface  => node["graphite"]["carbon"]["pickle_receiver_interface"],
+    :local_data_dir             => node["graphite"]["carbon"]["local_data_dir"],
     :cache_query_interface      => node["graphite"]["carbon"]["cache_query_interface"]
   )
   notifies :restart, "service[carbon-cache]"
