@@ -3,8 +3,8 @@ python_pip "carbon" do
   action :install
 end
 
-directory "local data dir" do
-  path node["graphite"]["carbon"]["local_data_dir"]
+directory "storage dir" do
+  path node["graphite"]["storage_dir"]
   action :create
   mode "0755"
   recursive true
