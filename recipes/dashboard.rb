@@ -25,6 +25,7 @@ template "/opt/graphite/webapp/graphite/local_settings.py" do
   owner node["apache"]["user"]
   group node["apache"]["group"]
   variables(
+    :storage_dir    => node["graphite"]["storage_dir"]
     :timezone       => node["graphite"]["dashboard"]["timezone"],
     :memcache_hosts => node["graphite"]["dashboard"]["memcache_hosts"]
   )
@@ -53,25 +54,25 @@ web_app "graphite" do
 end
 
 [ "log", "whisper" ].each do |dir|
-  directory "/opt/graphite/storage/#{dir}" do
+  directory "#{node["graphite"]["storage_dir"]}/#{dir}" do
     owner node["apache"]["user"]
     group node["apache"]["group"]
   end
 end
 
-directory "/opt/graphite/storage/log/webapp" do
+directory "#{node["graphite"]["storage_dir"]}/log/webapp" do
   owner node["apache"]["user"]
   group node["apache"]["group"]
 end
 
-cookbook_file "/opt/graphite/storage/graphite.db" do
+cookbook_file "#{node["graphite"]["storage_dir"]}/graphite.db" do
   owner node["apache"]["user"]
   group node["apache"]["group"]
   action :create_if_missing
 end
 
 execute "Correct graphite.db permissions" do
-  command "chown #{node["apache"]["user"]}:#{node["apache"]["group"]} /opt/graphite/storage/graphite.db"
+  command "chown #{node["apache"]["user"]}:#{node["apache"]["group"]} #{node["graphite"]["storage_dir"]}/graphite.db"
   action :run
 end
 
@@ -82,7 +83,7 @@ end
 
 logrotate_app "dashboard" do
   cookbook "logrotate"
-  path "/opt/graphite/storage/log/webapp/*.log"
+  path "#{node["graphite"]["storage_dir"]}/log/webapp/*.log"
   frequency "daily"
   rotate 7
   create "644 root root"

@@ -20,7 +20,7 @@ template "/opt/graphite/conf/carbon.conf" do
   variables(
     :line_receiver_interface    => node["graphite"]["carbon"]["line_receiver_interface"],
     :pickle_receiver_interface  => node["graphite"]["carbon"]["pickle_receiver_interface"],
-    :local_data_dir             => node["graphite"]["carbon"]["local_data_dir"],
+    :storage_dir                => node["graphite"]["storage_dir"],
     :cache_query_interface      => node["graphite"]["carbon"]["cache_query_interface"]
   )
   notifies :restart, "service[carbon-cache]"
