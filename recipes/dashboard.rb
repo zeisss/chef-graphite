@@ -36,7 +36,7 @@ apache_site "000-default" do
   enable false
 end
 
-sysadmins = search(:users, 'groups:sysadmin')
+sysadmins = search(:users, 'groups:sysadmin OR groups:webuser')
 template "/opt/graphite/storage/httpusers" do
   source "htpasswd.users.erb"
   owner node["apache"]["user"]
