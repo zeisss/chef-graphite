@@ -22,7 +22,7 @@ template "/opt/graphite/conf/carbon.conf" do
     :pickle_receiver_interface  => node["graphite"]["carbon"]["pickle_receiver_interface"],
     :storage_dir                => node["graphite"]["storage_dir"],
     :cache_query_interface      => node["graphite"]["carbon"]["cache_query_interface"],
-    :log_updates                => (node["graphite"]["carbon"]["cache_query_interface"] ? "True" : "False")
+    :log_updates                => (node["graphite"]["carbon"]["log_updates"] ? "True" : "False")
   )
   notifies :restart, "service[carbon-cache]"
 end
