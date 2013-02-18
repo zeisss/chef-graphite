@@ -43,9 +43,9 @@ template "/opt/graphite/conf/storage-aggregation.conf" do
 end
 
 execute "chown" do
-  command "chown -R #{node["apache"]["user"]}:#{node["apache"]["group"]} /opt/graphite/storage"
+  command "chown -R #{node["apache"]["user"]}:#{node["apache"]["group"]} #{node["graphite"]["storage_dir"]}"
   only_if do
-    f = File.stat("/opt/graphite/storage")
+    f = File.stat(node["graphite"]["storage_dir"])
     f.uid == 0 && f.gid == 0
   end
 end
@@ -58,7 +58,7 @@ end
 
 logrotate_app "carbon" do
   cookbook "logrotate"
-  path "/opt/graphite/storage/log/carbon-cache/carbon-cache-a/*.log"
+  path "#{node["graphite"]["storage_dir"]}/log/carbon-cache/carbon-cache-a/*.log"
   frequency "daily"
   rotate 7
   create "644 root root"
