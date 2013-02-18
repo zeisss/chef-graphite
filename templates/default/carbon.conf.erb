@@ -3,6 +3,8 @@ STORAGE_DIR = <%= @storage_dir %>
 LOCAL_DATA_DIR = <%=@storage_dir%>/whisper
 LOG_DIR = <%=@storage_dir%>/log
 
+LOG_UPDATES = <%=@log_updates %>
+
 USER =
 MAX_CACHE_SIZE = inf
 MAX_UPDATES_PER_SECOND = 1000
@@ -13,4 +15,3 @@ PICKLE_RECEIVER_INTERFACE = <%= @pickle_receiver_interface %>
 PICKLE_RECEIVER_PORT = 2004
 CACHE_QUERY_INTERFACE = <%= @cache_query_interface %>
 CACHE_QUERY_PORT = 7002
-LOG_UPDATES = True
